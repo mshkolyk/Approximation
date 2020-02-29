@@ -17,23 +17,29 @@ def BezierGrafik(mass0):
     n = 100
 
     mass = []
+
     for i in range(n):
         t = 1 * i / n
         mass.append(RecursBezier(mass1, t))
 
-    mass_x, mass_y = [], []
-    fig = plt.figure()
+    mass_x1, mass_y1 = [], []
+    for i in mass0:
+        mass_x1.append(i[0])
+        mass_y1.append(i[1])
 
+    mass_x, mass_y = [], []
     for point in mass:
         # plt.scatter(point.x, point.y)
         mass_x.append(point.x)
         mass_y.append(point.y)
 
-    graph1 = plt.plot(mass_x, mass_y)
+    fig = plt.figure()
+    graph = plt.plot(mass_x, mass_y, 'b-', linewidth=3)
+    graph1 = plt.plot(mass_x1, mass_y1, 'k--', linewidth=2)
 
     for k, point in enumerate(mass1):
         plt.scatter(point.x, point.y)
-        text1 = plt.text(point.x, point.y, '  P' + str(k))
+        text1 = plt.text(point.x*1.02, point.y*1.02, '  P' + str(k), fontsize=14)
 
     grid1 = plt.grid(True)  # линии вспомогательной сетки
     plt.show()
@@ -42,5 +48,5 @@ def BezierGrafik(mass0):
     # save(name='pic_2_1', fmt='png')
 
 
-mass = [[-1.0, 0.0], [-0.5, 1], [1.0, 1.0], [0.5, 0.5]]
+mass = [[-1.0, 0.0], [-0.5, 1], [1.0, 1.0], [0.5, 0.5], [1, 0.7]]
 BezierGrafik(mass)
