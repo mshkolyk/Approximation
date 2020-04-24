@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import Point2
+from other import Point2
 
 
 def RecursBezier(mass, t):

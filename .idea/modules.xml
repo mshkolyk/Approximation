@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BSpline.iml" filepath="$PROJECT_DIR$/.idea/BSpline.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Approximation.iml" filepath="$PROJECT_DIR$/.idea/Approximation.iml" />
     </modules>
   </component>
 </project>
