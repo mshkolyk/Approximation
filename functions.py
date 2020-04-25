@@ -12,12 +12,16 @@ def determination_factor(x, y):
     return R2
 
 
-def func_minimaze(function, mas_x, mas_y):
+def func_minimaze(function, mas_x, mas_y, x0):
     min_func = lambda x: skv(mas_y, [function(i, x) for i in mas_x])
 
-    res = minimize(min_func, [1, 1], method='Powell')
-    for _ in range(2):
-        res = minimize(min_func, res.x, method='Powell')
+    # metods = ['Nelder-Mead', 'Powell', 'CG', 'BFGS', 'Newton-CG', 'L-BFGS-B', 'TNC',
+    #           'COBYLA', 'SLSQP', 'trust-constr', 'dogleg', 'trust-ncg', 'trust-exact',
+    #           'trust-krylov']
+
+    res = minimize(min_func, x0, method='Powell',
+                   options={'maxiter': 1000000, 'xtol': 0.000000001, 'ftol': 0.000000001})
+
     print(res.x)
 
     return res.x
