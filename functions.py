@@ -12,19 +12,41 @@ def determination_factor(x, y):
     return R2
 
 
-def func_minimaze(function, mas_x, mas_y, x0):
+def func_minimaze(function, mas_x, mas_y, x0, all=0):
     min_func = lambda x: skv(mas_y, [function(i, x) for i in mas_x])
 
-    # metods = ['Nelder-Mead', 'Powell', 'CG', 'BFGS', 'Newton-CG', 'L-BFGS-B', 'TNC',
-    #           'COBYLA', 'SLSQP', 'trust-constr', 'dogleg', 'trust-ncg', 'trust-exact',
-    #           'trust-krylov']
+    if all:
+        methods = ['Nelder-Mead', 'Powell', 'CG', 'BFGS', 'L-BFGS-B', 'TNC',
+                   'COBYLA', 'SLSQP', 'trust-constr']
+        # error_methods = ['Newton-CG', 'dogleg', 'trust-ncg', 'trust-exact', 'trust-krylov']
 
-    res = minimize(min_func, x0, method='Powell',
-                   options={'maxiter': 1000000, 'xtol': 0.000000001, 'ftol': 0.000000001})
+        all_res = {}
+        for method in methods:
+            if method in ['Nelder-Mead', 'Powell', 'TNC']:
+                options = {'maxiter': 1000000, 'xtol': 0.000000001, 'ftol': 0.000000001}
+            else:
+                options = {}
+            all_res[method] = {'res': minimize(min_func, x0, method=method, options=options).x}
+            all_res[method]['r2'] = determination_factor(mas_y, get_mas(function, all_res[method]['res'], mas_x))
 
-    print(res.x)
+        search_method = 'Powell'
+        for method in methods:
+            try:
+                if all_res[method]['r2'] > all_res[search_method]['r2']:
+                    search_method = method
 
-    return res.x
+            except:
+                pass
+
+        print([{i: j['r2']} for i, j in zip(all_res.keys(), all_res.values())])
+        return all_res[search_method]['res']
+
+    else:
+        res = minimize(min_func, x0, method='Powell',
+                       options={'maxiter': 1000000, 'xtol': 0.000000001, 'ftol': 0.000000001})
+
+        print(res.x)
+        return res.x
 
 
 def get_mas(function, x, mas_x):
@@ -37,4 +59,6 @@ def draw_chart(mas_x, mas_y, mas_z, word):
     graph = [plt.plot(mas_x, mas_y, '-'), plt.plot(mas_x, mas_z, '-k')]
     grid1 = plt.grid(True)
     plt.legend(['time series', word])
+    plt.xlabel('x')
+    plt.ylabel('y')
     plt.show()
