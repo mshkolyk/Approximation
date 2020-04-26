@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import filedialog as fd
 from tkinter import messagebox as mb
+from tkinter import ttk
+from PIL import Image, ImageTk
+
 import approximation_functions as af
 
 select_list = ['Exponential Decline', 'Harmonic Decline', 'Hyperbolic Decline', 'Bleasdale', 'Farazdaghi-Harris',
@@ -44,15 +47,22 @@ class Window(Tk):
     def __init__(self):
         super().__init__()
 
-        width = 450
+        self.mas_x = []
+        self.mas_y = []
+
+        width = 520
         height = 400
 
         w = self.winfo_screenwidth() // 2 - width // 2
         h = self.winfo_screenheight() // 2 - height // 2
 
         self.geometry('{}x{}+{}+{}'.format(width, height, w, h))
+        self.resizable(False, False)
 
-        self.lbox = Listbox(selectmode=EXTENDED, width=40, height=25)
+        self.title("Approximation")
+        self.iconbitmap("img/icon2.png")
+
+        self.lbox = Listbox(selectmode=EXTENDED, width=24, height=25)
         self.lbox.pack(side=LEFT)
         for i in select_list:
             self.lbox.insert(END, i)
@@ -62,43 +72,81 @@ class Window(Tk):
         self.lbox.config(yscrollcommand=self.scroll.set)
         self.lbox['state'] = 'disabled'
 
-        frame1 = Frame()
-        frame1.pack(side=LEFT, padx=10)
+        self.frame1 = Frame()
+        self.frame1.pack(side=LEFT, padx=20)
 
-        self.entry = Entry(frame1)
-        self.entry.pack(anchor=N)
+        # self.frame2 = Frame()
+        # self.frame2.pack(side=RIGHT, padx=10)
 
-        self.b1 = Button(frame1, text="Open file", command=self.openFile)
+        self.tree = ttk.Treeview(show="headings", selectmode='none', height=400)
+        self.tree["columns"] = ("x", "y")
+        self.tree.column("x", width=80, minwidth=60, stretch=NO)
+        self.tree.column("y", width=80, minwidth=60, stretch=NO)
+        self.tree.heading("x", text="x")
+        self.tree.heading("y", text="y")
+        self.tree.pack(side=LEFT)
+
+        # self.entry = Entry(self.frame1)
+        # self.entry.pack(anchor=N)
+
+        self.b1 = Button(self.frame1, text="Open file", command=self.openFile, width=20)
         self.b1.pack(fill=X)
 
-        self.b2 = Button(frame1, text="Run", command=self.run)
+        self.b2 = Button(self.frame1, text="Run", command=self.run)
         self.b2.pack(fill=X)
         self.b2['state'] = 'disabled'
+
+        # img = Image.open("img/icon.png")
+        # render = ImageTk.PhotoImage(img)
+        # self.initil = Label(self.frame2, image=render)
+        # self.initil.image = render
+        # self.initil.pack()
 
     def openFile(self):
         file_name = fd.askopenfilename()
         file = open(file_name, 'r')
         data = file.read()
+
+        if data[-1] == '\n':
+            data = data[:-1]
+
+        for _ in range(10):
+            data = data.replace('  ', ' ')
+
         data = data.split('\n')
+
+        for k in range(len(data)-1):
+            print(data[k])
+            if data[k][0] == ' ':
+                data[k] = data[k][1:]
 
         try:
             self.mas_x = [float(i.split()[0]) for i in data]
             self.mas_y = [float(i.split()[1]) for i in data]
 
-            self.lbox['state'] = 'normal'
-            self.b2['state'] = 'normal'
-
             if len(self.mas_x) != len(self.mas_y):
                 mb.showerror('Error!', 'Data Incorrect!')
 
+            self.lbox['state'] = 'normal'
+            self.b2['state'] = 'normal'
+
+            for i in self.tree.get_children():
+                self.tree.delete(i)
+            for x, y in zip(self.mas_x, self.mas_y):
+                self.tree.insert('', 'end', values=(int(x), y))
+
         except:
             self.lbox['state'] = 'disabled'
+            self.b2['state'] = 'disabled'
+
+            for i in self.tree.get_children():
+                self.tree.delete(i)
+
             mb.showerror('Error!', 'Data Incorrect!')
 
     def run(self):
         option = self.lbox.curselection()
         select_dict[self.lbox.get(option)](self.mas_x, self.mas_y)
-        pass
 
 
 def main():
