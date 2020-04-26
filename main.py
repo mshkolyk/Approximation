@@ -6,15 +6,15 @@ from PIL import Image, ImageTk
 
 import approximation_functions as af
 
-select_list = ['Exponential Decline', 'Harmonic Decline', 'Hyperbolic Decline', 'Bleasdale', 'Farazdaghi-Harris',
-               'Reciprocal', 'Reciprocal Quadratic', 'Reciprocal-YD', 'Reciprocal Quadratic-YD',
-               'Exponential Plus Linear', 'Logistic', 'Weibull Model', 'Ratkowsky Model', 'MMF', 'Exponential',
-               'Modified Exponential', 'Vapor Pressure Model', 'Sinusoidal', 'Rational Model',
-               'Steinhart Hart Equation', 'Truncated Fourier Series', 'Polinom 4', 'Polinom 5', 'Polinom 6']
+# select_list = ['Exponential Decline', 'Harmonic Decline', 'Hyperbolic Decline', 'Bleasdale', 'Farazdaghi-Harris',
+#                'Reciprocal', 'Reciprocal Quadratic', 'Reciprocal-YD', 'Reciprocal Quadratic-YD',
+#                'Exponential Plus Linear', 'Logistic', 'Weibull Model', 'Ratkowsky Model', 'MMF', 'Exponential',
+#                'Modified Exponential', 'Vapor Pressure Model', 'Sinusoidal', 'Rational Model',
+#                'Steinhart Hart Equation', 'Truncated Fourier Series', 'Polinom 4', 'Polinom 5', 'Polinom 6']
 
 select_dict = {
-    'Exponential Decline': af.linear,
-    'Harmonic Decline': af.exponential_decline,
+    'Exponential Decline': af.exponential_decline,
+    'Harmonic Decline': af.harmonic_decline,
     'Hyperbolic Decline': af.hyperbolic_decline,
     'Bleasdale': af.bleasdale,
     'Farazdaghi-Harris': af.farazdaghi_harris,
@@ -50,7 +50,7 @@ class Window(Tk):
         self.mas_x = []
         self.mas_y = []
 
-        width = 520
+        width = 600
         height = 400
 
         w = self.winfo_screenwidth() // 2 - width // 2
@@ -60,11 +60,12 @@ class Window(Tk):
         self.resizable(False, False)
 
         self.title("Approximation")
-        self.iconbitmap("img/icon2.png")
+
+        self.iconbitmap('img/icon.ico')
 
         self.lbox = Listbox(selectmode=EXTENDED, width=24, height=25)
         self.lbox.pack(side=LEFT)
-        for i in select_list:
+        for i in select_dict.keys():
             self.lbox.insert(END, i)
 
         self.scroll = Scrollbar(command=self.lbox.yview)
@@ -89,18 +90,24 @@ class Window(Tk):
         # self.entry = Entry(self.frame1)
         # self.entry.pack(anchor=N)
 
+        self.tree2 = ttk.Treeview(self.frame1, show="headings", selectmode='none', height=7)
+        self.tree2["columns"] = ("x", "y")
+        self.tree2.column("x", width=60, minwidth=10, stretch=NO)
+        self.tree2.column("y", width=160, minwidth=10, stretch=NO)
+        self.tree2.pack(side=BOTTOM, pady=20)
+
+        img = Image.open("img/functions/empty.jpg")
+        render = ImageTk.PhotoImage(img)
+        self.function = Label(self.frame1, image=render)
+        self.function.image = render
+        self.function.pack(side=TOP, pady=20)
+
         self.b1 = Button(self.frame1, text="Open file", command=self.openFile, width=20)
         self.b1.pack(fill=X)
 
         self.b2 = Button(self.frame1, text="Run", command=self.run)
         self.b2.pack(fill=X)
         self.b2['state'] = 'disabled'
-
-        # img = Image.open("img/icon.png")
-        # render = ImageTk.PhotoImage(img)
-        # self.initil = Label(self.frame2, image=render)
-        # self.initil.image = render
-        # self.initil.pack()
 
     def openFile(self):
         file_name = fd.askopenfilename()
@@ -115,8 +122,7 @@ class Window(Tk):
 
         data = data.split('\n')
 
-        for k in range(len(data)-1):
-            print(data[k])
+        for k in range(len(data) - 1):
             if data[k][0] == ' ':
                 data[k] = data[k][1:]
 
@@ -146,7 +152,18 @@ class Window(Tk):
 
     def run(self):
         option = self.lbox.curselection()
-        select_dict[self.lbox.get(option)](self.mas_x, self.mas_y)
+        res = select_dict[self.lbox.get(option)](self.mas_x, self.mas_y)
+        print(res)
+        # img = Image.open("img/functions/"+select_dict[self.lbox.get(option)].__name__+".jpg")
+        img = Image.open("img/functions/"+ select_dict[self.lbox.get(option)].__name__ +".jpg")
+        render = ImageTk.PhotoImage(img)
+        self.function.configure(image=render)
+        self.function.image = render
+
+        for i in self.tree2.get_children():
+            self.tree2.delete(i)
+        for x, y in zip(res.keys(), res.values()):
+            self.tree2.insert('', 'end', values=(x, y))
 
 
 def main():

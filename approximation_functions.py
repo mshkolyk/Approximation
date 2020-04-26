@@ -28,6 +28,14 @@ def polinom(k):
 
         print('R2 =', f.determination_factor(mas_y, mas_z))
 
+        result = {}
+        for i in range(k+1):
+            result['a'+str(i)] = res[i]
+        result[' '] = ' '
+        result['R^2'] = f.determination_factor(mas_y, mas_z)
+
+        return result
+
     return polinom
 
 # Decline models
@@ -43,6 +51,8 @@ def exponential_decline(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'q0': res[0], 'a': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def harmonic_decline(mas_x, mas_y):
     print("\nharmonic decline")
@@ -55,6 +65,8 @@ def harmonic_decline(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'harmonic decline approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'q0': res[0], 'a': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def hyperbolic_decline(mas_x, mas_y):
@@ -69,6 +81,7 @@ def hyperbolic_decline(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'q0': res[0], 'a': res[1], 'b': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 # Yield-Spacing models
 def bleasdale(mas_x, mas_y):
@@ -83,6 +96,8 @@ def bleasdale(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def farazdaghi_harris(mas_x, mas_y):
     print("\nfarazdaghi_harris")
@@ -95,6 +110,8 @@ def farazdaghi_harris(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'farazdaghi-harris approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def reciprocal(mas_x, mas_y):
@@ -109,6 +126,8 @@ def reciprocal(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def reciprocal_quadratic(mas_x, mas_y):
     print("\nreciprocal_quadratic")
@@ -121,6 +140,8 @@ def reciprocal_quadratic(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'reciprocal_quadratic approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 # Yield-Density models
@@ -136,6 +157,8 @@ def reciprocal_yd(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def reciprocal_quadratic_yd(mas_x, mas_y):
     print("\nreciprocal_quadratic_yd")
@@ -149,6 +172,8 @@ def reciprocal_quadratic_yd(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def exponential_plus_linear(mas_x, mas_y):
     print("\nexponential_plus_linear")
@@ -161,6 +186,8 @@ def exponential_plus_linear(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'exponential plus linear approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 # sigmoidal models
@@ -176,6 +203,8 @@ def logistic(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def weibull_model(mas_x, mas_y):
     print("\nweibull_model")
@@ -188,6 +217,8 @@ def weibull_model(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'weibull model approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], 'd': res[3], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def ratkowsky_model(mas_x, mas_y):
@@ -202,6 +233,8 @@ def ratkowsky_model(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def mmf(mas_x, mas_y):
     print("\nmmf")
@@ -214,6 +247,8 @@ def mmf(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'mmf approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], 'd': res[3], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 # ...
@@ -229,6 +264,8 @@ def exponential(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def modified_exponential(mas_x, mas_y):
     print("\nmodified_exponential")
@@ -242,18 +279,7 @@ def modified_exponential(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
-
-def vapor_pressure_model(mas_x, mas_y):
-    print("\nvapor_pressure_model")
-
-    function = lambda i, x: exp(x[0] + x[1] / i + x[2] * log(i))
-
-    res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 1])
-    mas_z = f.get_mas(function, res, mas_x)
-
-    f.draw_chart(mas_x, mas_y, mas_z, 'vapor pressure model approximation')
-
-    print("R2 =", f.determination_factor(mas_y, mas_z))
+    return {'a': res[0], 'b': res[1], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def vapor_pressure_model(mas_x, mas_y):
@@ -267,6 +293,8 @@ def vapor_pressure_model(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'vapor pressure model approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def sinusoidal(mas_x, mas_y):
@@ -281,6 +309,8 @@ def sinusoidal(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'a': res[0], 'b': res[1], 'c': res[2], 'd': res[3], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def rational_model(mas_x, mas_y):
     print("\nrational_model")
@@ -293,6 +323,8 @@ def rational_model(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'rational model approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], 'd': res[3], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
 
 
 def steinhart_hart_equation(mas_x, mas_y):
@@ -307,6 +339,8 @@ def steinhart_hart_equation(mas_x, mas_y):
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
 
+    return {'A': res[0], 'B': res[1], 'C': res[2], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
+
 
 def truncated_fourier_series(mas_x, mas_y):
     print("\nsteinhart hart equation")
@@ -319,3 +353,5 @@ def truncated_fourier_series(mas_x, mas_y):
     f.draw_chart(mas_x, mas_y, mas_z, 'truncated fourier series approximation')
 
     print("R2 =", f.determination_factor(mas_y, mas_z))
+
+    return {'a': res[0], 'b': res[1], 'c': res[2], 'd': res[3], ' ': ' ', 'R^2': f.determination_factor(mas_y, mas_z)}
