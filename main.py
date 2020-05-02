@@ -1,16 +1,13 @@
 from tkinter import *
+from tkinter import Tk, ttk
 from tkinter import filedialog as fd
 from tkinter import messagebox as mb
-from tkinter import ttk
+
+
 from PIL import Image, ImageTk
 
 import approximation_functions as af
-
-# select_list = ['Exponential Decline', 'Harmonic Decline', 'Hyperbolic Decline', 'Bleasdale', 'Farazdaghi-Harris',
-#                'Reciprocal', 'Reciprocal Quadratic', 'Reciprocal-YD', 'Reciprocal Quadratic-YD',
-#                'Exponential Plus Linear', 'Logistic', 'Weibull Model', 'Ratkowsky Model', 'MMF', 'Exponential',
-#                'Modified Exponential', 'Vapor Pressure Model', 'Sinusoidal', 'Rational Model',
-#                'Steinhart Hart Equation', 'Truncated Fourier Series', 'Polinom 4', 'Polinom 5', 'Polinom 6']
+import functions as f
 
 select_dict = {
     'Exponential Decline': af.exponential_decline,
@@ -50,8 +47,8 @@ class Window(Tk):
         self.mas_x = []
         self.mas_y = []
 
-        width = 600
-        height = 400
+        width = 580
+        height = 450
 
         w = self.winfo_screenwidth() // 2 - width // 2
         h = self.winfo_screenheight() // 2 - height // 2
@@ -63,21 +60,21 @@ class Window(Tk):
 
         self.iconbitmap('img/icon.ico')
 
-        self.lbox = Listbox(selectmode=EXTENDED, width=24, height=25)
-        self.lbox.pack(side=LEFT)
+        self.frame2 = Frame()
+        self.frame2.pack(side=LEFT, padx=5)
+
+        self.lbox = Listbox(self.frame2, selectmode=EXTENDED, width=24, height=24)
+        self.lbox.pack(side=TOP)
         for i in select_dict.keys():
             self.lbox.insert(END, i)
 
-        self.scroll = Scrollbar(command=self.lbox.yview)
-        self.scroll.pack(side=LEFT, fill=Y)
-        self.lbox.config(yscrollcommand=self.scroll.set)
+        # self.scroll = Scrollbar(command=self.lbox.yview)
+        # self.scroll.pack(side=LEFT, fill=Y)
+        # self.lbox.config(yscrollcommand=self.scroll.set)
         self.lbox['state'] = 'disabled'
 
         self.frame1 = Frame()
-        self.frame1.pack(side=LEFT, padx=20)
-
-        # self.frame2 = Frame()
-        # self.frame2.pack(side=RIGHT, padx=10)
+        self.frame1.pack(side=LEFT, padx=10)
 
         self.tree = ttk.Treeview(show="headings", selectmode='none', height=400)
         self.tree["columns"] = ("x", "y")
@@ -87,20 +84,20 @@ class Window(Tk):
         self.tree.heading("y", text="y")
         self.tree.pack(side=LEFT)
 
-        # self.entry = Entry(self.frame1)
-        # self.entry.pack(anchor=N)
+        self.name = Label(self.frame1, text="")
+        self.name.pack(side=TOP, pady=5)
 
-        self.tree2 = ttk.Treeview(self.frame1, show="headings", selectmode='none', height=7)
+        self.tree2 = ttk.Treeview(self.frame1, show="headings", selectmode='none', height=10)
         self.tree2["columns"] = ("x", "y")
         self.tree2.column("x", width=60, minwidth=10, stretch=NO)
         self.tree2.column("y", width=160, minwidth=10, stretch=NO)
-        self.tree2.pack(side=BOTTOM, pady=20)
+        self.tree2.pack(side=BOTTOM, pady=10)
 
         img = Image.open("img/functions/empty.jpg")
         render = ImageTk.PhotoImage(img)
         self.function = Label(self.frame1, image=render)
         self.function.image = render
-        self.function.pack(side=TOP, pady=20)
+        self.function.pack(side=TOP, pady=5)
 
         self.b1 = Button(self.frame1, text="Open file", command=self.openFile, width=20)
         self.b1.pack(fill=X)
@@ -108,6 +105,10 @@ class Window(Tk):
         self.b2 = Button(self.frame1, text="Run", command=self.run)
         self.b2.pack(fill=X)
         self.b2['state'] = 'disabled'
+
+        self.b3 = Button(self.frame2, text="Search for the best (run all)", command=self.run_all)
+        self.b3.pack(side=BOTTOM, fill=X, pady=5)
+        self.b3['state'] = 'disabled'
 
     def openFile(self):
         file_name = fd.askopenfilename()
@@ -135,6 +136,7 @@ class Window(Tk):
 
             self.lbox['state'] = 'normal'
             self.b2['state'] = 'normal'
+            self.b3['state'] = 'normal'
 
             for i in self.tree.get_children():
                 self.tree.delete(i)
@@ -144,6 +146,7 @@ class Window(Tk):
         except:
             self.lbox['state'] = 'disabled'
             self.b2['state'] = 'disabled'
+            self.b3['state'] = 'normal'
 
             for i in self.tree.get_children():
                 self.tree.delete(i)
@@ -153,17 +156,54 @@ class Window(Tk):
     def run(self):
         option = self.lbox.curselection()
         res = select_dict[self.lbox.get(option)](self.mas_x, self.mas_y)
-        print(res)
-        # img = Image.open("img/functions/"+select_dict[self.lbox.get(option)].__name__+".jpg")
-        img = Image.open("img/functions/"+ select_dict[self.lbox.get(option)].__name__ +".jpg")
+
+        img = Image.open("img/functions/" + select_dict[self.lbox.get(option)].__name__ + ".jpg")
+        render = ImageTk.PhotoImage(img)
+        self.function.configure(image=render)
+        self.function.image = render
+
+        name = self.lbox.get(option)
+        self.name['text'] = name
+
+        mas_z = res.pop('mas_z')
+
+        for i in self.tree2.get_children():
+            self.tree2.delete(i)
+        for x, y in res.items():
+            self.tree2.insert('', 'end', values=(x, y))
+
+        f.draw_chart(self.mas_x, self.mas_y, mas_z, name.lower() + ' approximation')
+
+    def run_all(self):
+        res = {}
+        for name, func in select_dict.items():
+            try:
+                res[name] = func(self.mas_x, self.mas_y)
+            except:
+                pass
+
+        search_name, search_value = '', {'R^2': 0}
+        for name, value in res.items():
+            try:
+                if value['R^2'] > search_value['R^2']:
+                    search_name, search_value = name, value
+            except:
+                pass
+
+        mas_z = search_value.pop('mas_z')
+
+        img = Image.open("img/functions/" + select_dict[search_name].__name__ + ".jpg")
         render = ImageTk.PhotoImage(img)
         self.function.configure(image=render)
         self.function.image = render
 
         for i in self.tree2.get_children():
             self.tree2.delete(i)
-        for x, y in zip(res.keys(), res.values()):
+        for x, y in search_value.items():
             self.tree2.insert('', 'end', values=(x, y))
+
+        self.name['text'] = search_name
+        f.draw_chart(self.mas_x, self.mas_y, mas_z, search_name.lower() + ' approximation')
 
 
 def main():
