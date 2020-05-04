@@ -1,8 +1,8 @@
 from tkinter import *
-from tkinter import Tk, ttk
+from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter import messagebox as mb
-
+from tooltips import ToolTips, ToolTipsImage
 
 from PIL import Image, ImageTk
 
@@ -63,8 +63,9 @@ class Window(Tk):
         self.frame2 = Frame()
         self.frame2.pack(side=LEFT, padx=5)
 
-        self.lbox = Listbox(self.frame2, selectmode=EXTENDED, width=24, height=24)
+        self.lbox = Listbox(self.frame2, selectmode=SINGLE, width=24, height=24)
         self.lbox.pack(side=TOP)
+
         for i in select_dict.keys():
             self.lbox.insert(END, i)
 
@@ -84,10 +85,10 @@ class Window(Tk):
         self.tree.heading("y", text="y")
         self.tree.pack(side=LEFT)
 
-        self.name = Label(self.frame1, text="")
+        self.name = Label(self.frame1, text='')
         self.name.pack(side=TOP, pady=5)
 
-        self.tree2 = ttk.Treeview(self.frame1, show="headings", selectmode='none', height=10)
+        self.tree2 = ttk.Treeview(self.frame1, show="headings", selectmode='none', height=9)
         self.tree2["columns"] = ("x", "y")
         self.tree2.column("x", width=60, minwidth=10, stretch=NO)
         self.tree2.column("y", width=160, minwidth=10, stretch=NO)
@@ -95,7 +96,7 @@ class Window(Tk):
 
         img = Image.open("img/functions/empty.jpg")
         render = ImageTk.PhotoImage(img)
-        self.function = Label(self.frame1, image=render)
+        self.function = Label(self.frame1, image=render, borderwidth=1, relief='solid')
         self.function.image = render
         self.function.pack(side=TOP, pady=5)
 
@@ -109,6 +110,8 @@ class Window(Tk):
         self.b3 = Button(self.frame2, text="Search for the best (run all)", command=self.run_all)
         self.b3.pack(side=BOTTOM, fill=X, pady=5)
         self.b3['state'] = 'disabled'
+
+        self.b3tt = ToolTips(self.b3, "It may be a long time")
 
     def openFile(self):
         file_name = fd.askopenfilename()
@@ -152,6 +155,8 @@ class Window(Tk):
                 self.tree.delete(i)
 
             mb.showerror('Error!', 'Data Incorrect!')
+
+        self.lboxtt = ToolTipsImage(self.lbox, select_dict)
 
     def run(self):
         option = self.lbox.curselection()

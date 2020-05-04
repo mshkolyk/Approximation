@@ -29,8 +29,9 @@ def polinom(k):
             result['a' + str(i)] = res[i]
         result[' '] = ' '
         result['R^2'] = f.determination_factor(mas_y, mas_z)
+        result['mas_z'] = mas_z
 
-        return result, mas_z
+        return result
 
     return polinom
 
