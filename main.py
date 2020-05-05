@@ -3,7 +3,10 @@ from tkinter import ttk
 from tkinter import filedialog as fd
 from tkinter import messagebox as mb
 from tooltips import ToolTips, ToolTipsImage
+from images import images, icon
 
+import os
+from io import BytesIO
 from PIL import Image, ImageTk
 
 import approximation_functions as af
@@ -60,7 +63,9 @@ class Window(Tk):
 
         self.title("Approximation")
 
-        self.iconbitmap('img/icon.ico')
+        Image.open(BytesIO(icon)).save('icon.ico')
+        self.iconbitmap('icon.ico')
+        os.remove('icon.ico')
 
         self.frame2 = Frame()
         self.frame2.pack(side=LEFT, padx=5)
@@ -96,7 +101,8 @@ class Window(Tk):
         self.tree2.column("y", width=160, minwidth=10, stretch=NO)
         self.tree2.pack(side=BOTTOM, pady=10)
 
-        img = Image.open("img/functions/empty.jpg")
+        # img = Image.open("img/functions/empty.jpg")
+        img = Image.open(BytesIO(images['empty']))
         render = ImageTk.PhotoImage(img)
         self.function = Label(self.frame1, image=render, borderwidth=1, relief='solid')
         self.function.image = render
@@ -164,7 +170,9 @@ class Window(Tk):
         option = self.lbox.curselection()
         res = select_dict[self.lbox.get(option)](self.mas_x, self.mas_y)
 
-        img = Image.open("img/functions/" + select_dict[self.lbox.get(option)].__name__ + ".jpg")
+        # img = Image.open("img/functions/" + select_dict[self.lbox.get(option)].__name__ + ".jpg")
+        img = Image.open(BytesIO(images[select_dict[self.lbox.get(option)].__name__]))
+
         render = ImageTk.PhotoImage(img)
         self.function.configure(image=render)
         self.function.image = render
@@ -199,7 +207,8 @@ class Window(Tk):
 
         mas_z = search_value.pop('mas_z')
 
-        img = Image.open("img/functions/" + select_dict[search_name].__name__ + ".jpg")
+        # img = Image.open("img/functions/" + select_dict[search_name].__name__ + ".jpg")
+        img = Image.open(BytesIO(images[select_dict[search_name].__name__]))
         render = ImageTk.PhotoImage(img)
         self.function.configure(image=render)
         self.function.image = render

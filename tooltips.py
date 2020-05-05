@@ -1,5 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+from images import images
+from io import BytesIO
 
 
 class ToolTips(object):
@@ -46,9 +48,12 @@ class ToolTipsImage(object):
 
         option = self.widget.curselection()
         try:
-            img = Image.open("img/functions/" + self.select_dict[self.widget.get(option)].__name__ + ".jpg")
+            # img = Image.open("img/functions/" + self.select_dict[self.widget.get(option)].__name__ + ".jpg")
+            img = Image.open(BytesIO(images[self.select_dict[self.widget.get(option)].__name__]))
+
         except:
-            img = Image.open("img/functions/empty.jpg")
+            # img = Image.open("img/functions/empty.jpg")
+            img = Image.open(BytesIO(images['empty']))
 
         render = ImageTk.PhotoImage(img)
         self.label = tk.Label(self.tw, image=render, borderwidth=1, relief='solid')
@@ -58,7 +63,8 @@ class ToolTipsImage(object):
 
     def update(self, _):
         option = self.widget.curselection()
-        img = Image.open("img/functions/" + self.select_dict[self.widget.get(option)].__name__ + ".jpg")
+        # img = Image.open("img/functions/" + self.select_dict[self.widget.get(option)].__name__ + ".jpg")
+        img = Image.open(BytesIO(images[self.select_dict[self.widget.get(option)].__name__]))
         render = ImageTk.PhotoImage(img)
         self.label.configure(image=render)
         self.label.image = render
