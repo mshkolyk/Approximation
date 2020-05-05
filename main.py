@@ -9,6 +9,8 @@ from PIL import Image, ImageTk
 import approximation_functions as af
 import functions as f
 
+from pkg_resources import py2_warn
+
 select_dict = {
     'Exponential Decline': af.exponential_decline,
     'Harmonic Decline': af.harmonic_decline,

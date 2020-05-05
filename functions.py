@@ -34,18 +34,15 @@ def func_minimaze(function, mas_x, mas_y, x0, all=0):
             try:
                 if all_res[method]['r2'] > all_res[search_method]['r2']:
                     search_method = method
-
             except:
                 pass
 
-        # print([{i: j['r2']} for i, j in zip(all_res.keys(), all_res.values())])
         return all_res[search_method]['res']
 
     else:
         res = minimize(min_func, x0, method='Powell',
                        options={'maxiter': 1000000, 'xtol': 0.000000001, 'ftol': 0.000000001})
 
-        # print(res.x)
         return res.x
 
 

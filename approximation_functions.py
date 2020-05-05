@@ -3,8 +3,7 @@ from math import exp, log, cos
 
 
 # def linear(mas_x, mas_y):
-#     print("\nlinear")
-#     function = lambda i, x: x[0] * i + x[1]
+#       function = lambda i, x: x[0] * i + x[1]
 #
 #     res = f.func_minimaze(function, mas_x, mas_y, [1, 1])
 #     mas_z = f.get_mas(function, res, mas_x)
@@ -16,8 +15,6 @@ from math import exp, log, cos
 
 def polinom(k):
     def polinom(mas_x, mas_y):
-        print("\npolinom", k)
-
         function = lambda i, x: sum([x[j] * (i ** j) for j in range(k + 1)])
         x0 = [0 for _ in range(k + 1)]
 
@@ -38,8 +35,6 @@ def polinom(k):
 
 # Decline models
 def exponential_decline(mas_x, mas_y):
-    print("\nexponential decline")
-
     function = lambda i, x: x[0] * exp(-i / x[1])
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1])
@@ -49,8 +44,6 @@ def exponential_decline(mas_x, mas_y):
 
 
 def harmonic_decline(mas_x, mas_y):
-    print("\nharmonic decline")
-
     function = lambda i, x: x[0] / (1 + i / x[1])
 
     res = f.func_minimaze(function, mas_x, mas_y, [0, 1])
@@ -60,8 +53,6 @@ def harmonic_decline(mas_x, mas_y):
 
 
 def hyperbolic_decline(mas_x, mas_y):
-    print("\nhyperbolic decline")
-
     function = lambda i, x: x[0] * (1 + x[2] * i / x[1]) ** (-1 / x[2])
 
     res = f.func_minimaze(function, mas_x, mas_y, [0, 0, -1])
@@ -73,8 +64,6 @@ def hyperbolic_decline(mas_x, mas_y):
 
 # Yield-Spacing models
 def bleasdale(mas_x, mas_y):
-    print("\nbleasdale")
-
     function = lambda i, x: (x[0] + x[1] * i) ** (-1 / x[2])
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 1])
@@ -85,8 +74,6 @@ def bleasdale(mas_x, mas_y):
 
 
 def farazdaghi_harris(mas_x, mas_y):
-    print("\nfarazdaghi_harris")
-
     function = lambda i, x: 1 / (x[0] + x[1] * (i ** x[2]))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 1])
@@ -96,8 +83,6 @@ def farazdaghi_harris(mas_x, mas_y):
 
 
 def reciprocal(mas_x, mas_y):
-    print("\nreciprocal")
-
     function = lambda i, x: 1 / (x[0] + x[1] * i)
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0])
@@ -107,8 +92,6 @@ def reciprocal(mas_x, mas_y):
 
 
 def reciprocal_quadratic(mas_x, mas_y):
-    print("\nreciprocal_quadratic")
-
     function = lambda i, x: 1 / (x[0] + x[1] * i + x[2] * (i ** 2))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 0])
@@ -120,8 +103,6 @@ def reciprocal_quadratic(mas_x, mas_y):
 
 # Yield-Density models
 def reciprocal_yd(mas_x, mas_y):
-    print("\nreciprocal_yd")
-
     function = lambda i, x: i / (x[0] + x[1] * i)
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0])
@@ -131,8 +112,6 @@ def reciprocal_yd(mas_x, mas_y):
 
 
 def reciprocal_quadratic_yd(mas_x, mas_y):
-    print("\nreciprocal_quadratic_yd")
-
     function = lambda i, x: i / (x[0] + x[1] * i + x[2] * (i ** 2))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 0])
@@ -143,8 +122,6 @@ def reciprocal_quadratic_yd(mas_x, mas_y):
 
 
 def exponential_plus_linear(mas_x, mas_y):
-    print("\nexponential_plus_linear")
-
     function = lambda i, x: x[0] + x[1] * (x[3] ** i) + x[2] * i
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 0, 0])
@@ -156,8 +133,6 @@ def exponential_plus_linear(mas_x, mas_y):
 
 # sigmoidal models
 def logistic(mas_x, mas_y):
-    print("\nlogistic")
-
     function = lambda i, x: x[0] / (1 + x[1] * exp(-x[2] * i))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 0])
@@ -168,8 +143,6 @@ def logistic(mas_x, mas_y):
 
 
 def weibull_model(mas_x, mas_y):
-    print("\nweibull_model")
-
     function = lambda i, x: x[0] - x[1] * exp(-x[2] * (i ** x[3]))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, -1, -1, -1])
@@ -180,8 +153,6 @@ def weibull_model(mas_x, mas_y):
 
 
 def ratkowsky_model(mas_x, mas_y):
-    print("\nratkowsky_model")
-
     function = lambda i, x: x[0] / (1 + exp(x[1] - x[2] * i))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 0])
@@ -192,8 +163,6 @@ def ratkowsky_model(mas_x, mas_y):
 
 
 def mmf(mas_x, mas_y):
-    print("\nmmf")
-
     function = lambda i, x: (x[0] * x[1] + x[2] * (i ** x[3])) / (x[1] + i ** x[3])
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 0, 0])
@@ -205,8 +174,6 @@ def mmf(mas_x, mas_y):
 
 # ...
 def exponential(mas_x, mas_y):
-    print("\nexponential")
-
     function = lambda i, x: x[0] * exp(x[1] * i)
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0])
@@ -216,8 +183,6 @@ def exponential(mas_x, mas_y):
 
 
 def modified_exponential(mas_x, mas_y):
-    print("\nmodified_exponential")
-
     function = lambda i, x: x[0] * exp(x[1] / i)
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0])
@@ -227,8 +192,6 @@ def modified_exponential(mas_x, mas_y):
 
 
 def vapor_pressure_model(mas_x, mas_y):
-    print("\nvapor_pressure_model")
-
     function = lambda i, x: exp(x[0] + x[1] / i + x[2] * log(i))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 1])
@@ -239,8 +202,6 @@ def vapor_pressure_model(mas_x, mas_y):
 
 
 def sinusoidal(mas_x, mas_y):
-    print("\nsinusoidal")
-
     function = lambda i, x: x[0] + x[1] * cos(x[2] * i + x[3])
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 0, 1])
@@ -251,8 +212,6 @@ def sinusoidal(mas_x, mas_y):
 
 
 def rational_model(mas_x, mas_y):
-    print("\nrational_model")
-
     function = lambda i, x: (x[0] + x[1] * i) / (1 + x[2] * i + x[3] * (i ** 2))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 1, 0, 0])
@@ -263,8 +222,6 @@ def rational_model(mas_x, mas_y):
 
 
 def steinhart_hart_equation(mas_x, mas_y):
-    print("\nsteinhart_hart_equation")
-
     function = lambda i, x: 1 / (x[0] + x[1] * log(i) + x[2] * (log(i) ** 3))
 
     res = f.func_minimaze(function, mas_x, mas_y, [1, 0, 0])
@@ -275,8 +232,6 @@ def steinhart_hart_equation(mas_x, mas_y):
 
 
 def truncated_fourier_series(mas_x, mas_y):
-    print("\nsteinhart hart equation")
-
     function = lambda i, x: x[0] * cos(i + x[3]) + x[1] * cos(2 * i + x[3]) + x[2] * cos(3 * i + x[3])
 
     res = f.func_minimaze(function, mas_x, mas_y, [0, 0, 0, 1])
